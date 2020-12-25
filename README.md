@@ -51,7 +51,7 @@ docker run -d \
 --cap-add sys_admin \
 --device=/dev/fuse \
 -v /mnt/drive:/mnt/gdrive:shared \
-maltokyo/docker-google-drive-ocamlfuse:0.7.19
+edgora/gdfuse
 ````
 
 Docker Compose (recommended):

@@ -57,5 +57,18 @@ fi
 
 # mount as the gdfuser user
 echo "mounting at ${DRIVE_PATH}"
-exec su gdfuser -l -c "google-drive-ocamlfuse \"${DRIVE_PATH}\"\
- -f -o uid=${PUID},gid=${PGID}${MOUNT_OPTS}"
+if [ ! -d "${DRIVE_PATH}" ]; then
+   mkdir -p ${DRIVE_PATH}
+fi
+mkdir -p /config/.gdfuse/default/cache
+chown -R ${PUID}:${PGID} ${DRIVE_PATH}
+chown -R ${PUID}:${PGID} /config/.gdfuse
+fusermount -u ${DRIVE_PATH}
+chmod 777 ${DRIVE_PATH}
+
+#if [ "0" = "${PUID}" ]; then
+#  exec "google-drive-ocamlfuse -f  ${DRIVE_PATH}"
+#else
+  exec su gdfuser -l -c "google-drive-ocamlfuse \"${DRIVE_PATH}\"\
+  -f -o uid=${PUID},gid=${PGID}${MOUNT_OPTS}"
+#fi
